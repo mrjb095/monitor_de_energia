@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dispositivo {{ device.device_id }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <a href="{{ url_for('devices_web.list_devices') }}">← Voltar à lista</a>
+  <h1>Dispositivo {{ device.device_id }}</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flashes">
+      {% for category, msg in messages %}
+        <li class="{{ category }}">{{ msg }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <section>
+    <h2>Status</h2>
+    <pre>{{ status | tojson(indent=2) }}</pre>
+  </section>
+
+  <section>
+    <h2>Configuração Atual</h2>
+    <pre>{{ config | tojson(indent=2) }}</pre>
+  </section>
+
+  <section>
+    <h2>Saúde do Dispositivo</h2>
+    <pre>{{ health | tojson(indent=2) }}</pre>
+  </section>
+
+  <section>
+    <h2>Editar Configuração</h2>
+    <form method="post">
+      <label>
+        Server IP:<br>
+        <input name="serverIP" value="{{ config.serverIP }}">
+      </label><br>
+      <label>
+        Server Port:<br>
+        <input name="serverPort" value="{{ config.serverPort }}">
+      </label><br>
+      <label>
+        Intervalo (ms):<br>
+        <input name="intervalo" type="number" value="{{ config.intervalo }}">
+      </label><br>
+      <button type="submit">Salvar</button>
+    </form>
+  </section>
+</body>
+</html>

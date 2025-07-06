@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Monitor de Energia</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .button {
+            padding: 8px 15px;
+            background-color: #00e5ff;
+            color: #121212;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 5px 5px 5px 0;
+        }
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 8px;
+            flex: 1 1 250px;
+        }
+        .graficos {
+            display: flex;
+            flex-direction: column;
+        }
+        canvas {
+            background-color: #222;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+        }
+        #alerta_alarme {
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        #status_esp {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        @media (min-width: 800px) {
+            .graficos {
+                flex-direction: row;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            canvas {
+                flex: 1 1 30%;
+                max-width: 33%;
+                max-height: 96%;
+            }
+            header {
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Monitor de Energia - Dashboard</h1>
+        <div style="display:flex; align-items:center;">
+            <a href="{{ url_for('historico') }}" class="button">Histórico</a>
+            <a href="{{ url_for('eventos') }}" class="button">Eventos</a>
+            <a href="{{ url_for('exportar_dados') }}" class="button">Exportar</a>
+            <a href="{{ url_for('logout') }}" class="button">Logout</a>
+            <div id="status_esp">Verificando...</div>
+        </div>
+    </header>
+
+    <div id="alerta_alarme">
+        <strong>⚠️ Último Alarme:</strong> <span id="texto_alarme">-</span>
+    </div>
+
+    <h3>Bem-vindo, {{ username }}!</h3>
+
+    <div class="cards">
+        <div class="card">
+            <h4>Corrente Instântanea: <span id="corrente">-</span> A</h4>
+            <p>Média Corrente: <span id="corrente_media">-</span> A</p>
+        </div>
+        <div class="card">
+            <h4>Tensão Instântanea: <span id="tensao">-</span> V</h4>
+            <p>Média Tensão: <span id="tensao_media">-</span> V</p>
+        </div>
+        <div class="card">
+            <h4>Potência Instântanea: <span id="potencia">-</span> W</h4>
+        </div>
+        <div class="card">
+            <div class="card">
+                <h4>Acumulado desde dia 13:</h4>
+                <p>Energia: <span id="energia_mes">-</span></p>
+                <p>Custo: R$ <span id="custo_mes">-</span></p>
+                <p>Previsão Total: <span id="previsao_mes">-</span> (~R$ <span id="previsao_custo">-</span>)</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div>
+        <label for="periodoSelect">Período:</label>
+        <select id="periodoSelect" onchange="carregarPeriodo()">
+            <option value="ultima_hora">Última Hora</option>
+            <option value="ultimo_dia">Último Dia</option>
+            <option value="ultimos_7_dias">Últimos 7 Dias</option>
+            <option value="personalizado">Personalizado</option>
+        </select>
+
+        <span id="personalizadoCampos" style="display:none;">
+            <input type="datetime-local" id="inicioPersonalizado">
+            <input type="datetime-local" id="fimPersonalizado">
+            <button onclick="carregarPeriodo()">Aplicar</button>
+        </span>
+    </div>
+
+    <div class="graficos">
+        <canvas id="graficoCorrente"></canvas>
+        <canvas id="graficoTensao"></canvas>
+        <canvas id="graficoPotencia"></canvas>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

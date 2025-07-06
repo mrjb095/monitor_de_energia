@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Devices</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <h1>Lista de Dispositivos</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Device ID</th>
+        <th>IP</th>
+        <th>Porta</th>
+        <th>Último Contato</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in devices %}
+      <tr>
+        <td>
+          <a href="{{ url_for('devices_web.device_detail', device_id=d.device_id) }}">
+            {{ d.device_id }}
+          </a>
+        </td>
+        <td>{{ d.ip }}</td>
+        <td>{{ d.port }}</td>
+        <td>{{ d.last_seen }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

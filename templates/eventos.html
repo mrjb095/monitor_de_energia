@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Histórico de Alarmes</title>
+    <style>
+        body { background-color: #121212; color: white; font-family: Arial; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border-bottom: 1px solid #444; }
+        th { background-color: #333; }
+        .button { padding: 8px 15px; background-color: #00e5ff; color: #121212; text-decoration: none; border-radius: 5px; margin-right: 10px; }
+        .button-container { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Histórico de Alarmes / Eventos</h2>
+
+    <div class="button-container">
+        <a href="{{ url_for('dashboard') }}" class="button">⬅ Voltar ao Dashboard</a>
+        <a href="{{ url_for('exportar_eventos_csv') }}" class="button">⬇ Exportar CSV</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>Data / Hora</th>
+            <th>Tipo</th>
+            <th>Mensagem</th>
+        </tr>
+        {% for evento in eventos %}
+        <tr>
+            <td>{{ evento[0] }}</td>
+            <td>{{ evento[1] }}</td>
+            <td>{{ evento[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

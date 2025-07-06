@@ -1,0 +1,11 @@
+body { font-family: Arial, sans-serif; padding: 20px; background: #121212; color: #eee; }
+a { color: #0af; text-decoration: none; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { padding: 8px; border-bottom: 1px solid #444; }
+th { background: #1e1e1e; }
+.flashes li { list-style: none; padding: 5px; margin: 5px 0; }
+.flashes .success { background: #064; color: #afa; }
+.flashes .danger { background: #600; color: #faa; }
+.flashes .warning { background: #664400; color: #ffeb99; }
+input, button { padding: 6px; margin: 4px 0; border-radius: 4px; border: 1px solid #555; background: #1e1e1e; color: #eee; }
+button { cursor: pointer; }

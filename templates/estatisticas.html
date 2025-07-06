@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Estatísticas do Período</title>
+    <style>
+        body { background-color: #121212; color: white; font-family: Arial; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        td, th { border: 1px solid #444; padding: 8px; }
+        th { background-color: #333; }
+    </style>
+</head>
+<body>
+    <h2>KPIs - Últimos 30 dias</h2>
+    <a href="{{ url_for('dashboard') }}" style="color:cyan;">⬅ Voltar ao Dashboard</a>
+
+    {% if erro %}
+        <p>{{ erro }}</p>
+    {% else %}
+    <table>
+        <tr><th>Métrica</th><th>Valor</th></tr>
+        <tr><td>Corrente Média</td><td>{{ stats['corrente_media']|round(2) }} A</td></tr>
+        <tr><td>Corrente Pico</td><td>{{ stats['corrente_pico']|round(2) }} A</td></tr>
+        <tr><td>Desvio Corrente</td><td>{{ stats['corrente_desvio']|round(2) }} A</td></tr>
+
+        <tr><td>Tensão Média</td><td>{{ stats['tensao_media']|round(2) }} V</td></tr>
+        <tr><td>Tensão Máxima</td><td>{{ stats['tensao_max']|round(2) }} V</td></tr>
+        <tr><td>Tensão Mínima</td><td>{{ stats['tensao_min']|round(2) }} V</td></tr>
+        <tr><td>Desvio Tensão</td><td>{{ stats['tensao_desvio']|round(2) }} V</td></tr>
+
+        <tr><td>Potência Média</td><td>{{ stats['potencia_media']|round(2) }} W</td></tr>
+        <tr><td>Potência Pico</td><td>{{ stats['potencia_pico']|round(2) }} W</td></tr>
+    </table>
+    {% endif %}
+</body>
+</html>

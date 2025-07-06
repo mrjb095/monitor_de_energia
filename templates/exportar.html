@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Exportação Manual</title>
+    <style>
+        body { background-color: #121212; color: white; font-family: Arial; padding: 20px; }
+        .button { padding: 10px 20px; background-color: #00e5ff; color: #121212; border: none; border-radius: 5px; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Exportação Manual de Dados Mensais</h2>
+
+    {% if mensagem %}
+        <p>{{ mensagem }}</p>
+    {% endif %}
+
+    <a href="{{ url_for('dashboard') }}" class="button">⬅ Voltar ao Dashboard</a>
+</body>
+</html>
