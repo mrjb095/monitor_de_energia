@@ -1,0 +1,42 @@
+name: Build and Publish Docker Image
+
+on:
+  push:
+    branches:
+      - main    # ou substitua pela branch que você usa para deploy
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Faz checkout do código
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2) Loga no GitHub Container Registry usando o GITHUB_TOKEN
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # 3) Constrói e envia a imagem
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/monitor-energia:latest
+            ghcr.io/${{ github.repository_owner }}/monitor-energia:${{ github.sha }}
+          context: .
+
+      # 4) Opcional: limpar cache local
+      - name: Prune unused Docker stuff
+        run: docker system prune -f
